@@ -31,7 +31,7 @@ def generateImg(driver):
     driver.get(HTML_TEMPLATE_PATH)
     title = driver.title
     print title
-    full_image_name = '%s%s-%s.jpg' % (IMAGE_PATH, time.strftime('%Y%m%d', time.localtime()), uuid.uuid4())
+    full_image_name = '%s%s-%s.png' % (IMAGE_PATH, time.strftime('%Y%m%d', time.localtime()), uuid.uuid4())
     driver.save_screenshot(full_image_name)
 
     element = driver.find_element_by_id("pic")
@@ -46,6 +46,6 @@ def generateImg(driver):
 
     picture = Image.open(full_image_name)
     picture = picture.crop((xPiont, yPiont, element_width, element_height))
-    res_img_name = '%s%s-%s_res.jpg' % (IMAGE_PATH, time.strftime('%Y%m%d', time.localtime()), uuid.uuid4())
+    res_img_name = '%s%s-%s_res.png' % (IMAGE_PATH, time.strftime('%Y%m%d', time.localtime()), uuid.uuid4())
     picture.save(res_img_name)
     return 'ok'
