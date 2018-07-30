@@ -4,14 +4,17 @@ from selenium import webdriver
 from PIL import Image
 import time
 import uuid
+import os
 
-WEBDRIVER_PATH = "/home/wildcat/usr/local/chromedriver/chromedriver"
-HTML_TEMPLATE_PATH = 'file:///home/wildcat/PycharmProjects/imageGenerator/html/template.html'
-IMAGE_PATH = '/home/wildcat/PycharmProjects/imageGenerator/img/'
+WORK_SPACE = os.getcwd()
+WEBDRIVER_PATH = "%s/docker/chromedriver" % WORK_SPACE
+HTML_TEMPLATE_PATH = 'file://%s/html/template.html' % WORK_SPACE
+IMAGE_PATH = '%s/img/' % WORK_SPACE
 
 
 # 开启webdriver
 def openWebDriver(headlessflag=True):
+    print(os.getcwd())
     chrome_options = webdriver.ChromeOptions()
     if headlessflag:
         # 使用headless无界面浏览器模式
@@ -46,6 +49,6 @@ def generateImg(driver):
 
     picture = Image.open(full_image_name)
     picture = picture.crop((xPiont, yPiont, element_width, element_height))
-    res_img_name = '%s%s-%s_res.png' % (IMAGE_PATH, time.strftime('%Y%m%d', time.localtime()), uuid.uuid4())
+    res_img_name = '%s_res.png' % full_image_name[:-4]
     picture.save(res_img_name)
     return 'ok'

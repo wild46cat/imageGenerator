@@ -9,11 +9,11 @@ chrome_options = webdriver.ChromeOptions()
 # 使用headless无界面浏览器模式
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
-driver1 = webdriver.Chrome(executable_path="/home/wildcat/usr/local/chromedriver/chromedriver", options=chrome_options)
-driver1.get("file:///home/wildcat/PycharmProjects/imageGenerator/html/template.html")
+driver1 = webdriver.Chrome(executable_path="/home/user/usr/local/chromedriver/chromedriver", options=chrome_options)
+driver1.get("file:///home/user/project/self/pythonproject/imageGenerator/html/template.html")
 # driver1.get("http://www.baidu.com")
 data = driver1.title
-full_image = '/home/wildcat/PycharmProjects/imageGenerator/img/template.png'
+full_image = '/home/user/project/self/pythonproject/imageGenerator/img/template.png'
 driver1.save_screenshot(full_image)
 
 element = driver1.find_element_by_id("pic")
@@ -27,7 +27,7 @@ element_width = xPiont + element.size['width']
 element_height = yPiont + element.size['height']
 
 picture = Image.open(full_image)
-res_image = '/home/wildcat/PycharmProjects/imageGenerator/img/template_res.png'
+res_image = '/home/user/project/self/pythonproject/imageGenerator/img/template_res.png'
 picture = picture.crop((xPiont, yPiont, element_width, element_height))
 picture.save(res_image);
 
