@@ -1,0 +1,29 @@
+FROM ubuntu:18.04
+
+MAINTAINER xueyou <xueyou.wu@langtaojin.com>
+
+COPY sources.list /etc/apt/sources.list
+COPY ./98tsinghuasource /etc/apt/apt.conf.d/98tsinghuasource
+# APT 自动安装相关的依赖包，如需其他依赖包在此添加
+RUN apt-get update && \  
+      apt-get install -y python \
+                       python-dev \
+                       python-pip  \
+			wget \
+		       libx11-dev \
+		       libnss3-dev \
+			 xvfb gtk2-engines-pixbuf \
+			xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable \
+			imagemagick x11-apps \
+    && pip install pillow \
+    && pip install flask \
+    && pip install selenium
+
+RUN Xvfb -ac :99 -screen 0 1280x1024x16 & export DISPLAY=:99
+#google安装
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - 
+RUN sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+RUN apt-get update 
+RUN apt-get -y install google-chrome-stable
+
+ENTRYPOINT ["/bin/bash"]

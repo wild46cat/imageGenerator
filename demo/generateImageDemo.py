@@ -9,6 +9,7 @@ chrome_options = webdriver.ChromeOptions()
 # 使用headless无界面浏览器模式
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--disable-gpu')
+chrome_options.add_argument('--no-sandbox')
 driver1 = webdriver.Chrome(executable_path="/home/user/usr/local/chromedriver/chromedriver", options=chrome_options)
 driver1.get("file:///home/user/project/self/pythonproject/imageGenerator/html/template.html")
 # driver1.get("http://www.baidu.com")

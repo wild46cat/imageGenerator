@@ -20,7 +20,8 @@ def openWebDriver(headlessflag=True):
         # 使用headless无界面浏览器模式
         chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
-    driver = webdriver.Chrome(executable_path=WEBDRIVER_PATH, options=chrome_options)
+    chrome_options.add_argument('--no-sandbox')
+    driver = webdriver.Chrome(executable_path=WEBDRIVER_PATH, options=chrome_options, port=56789)
     return driver
 
 
