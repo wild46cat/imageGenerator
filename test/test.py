@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding:utf8 -*-
+import datetime
 import time
 
-print time.strftime('%Y%m%d', time.localtime())
-str = '12345678sdfdfdf'
-str_sub = str[:-4]
-print(str_sub)
+t1 = time.mktime(datetime.datetime.now().timetuple())
+t2 = time.mktime(datetime.datetime.now().timetuple())
+print(t2 - t1)

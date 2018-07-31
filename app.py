@@ -2,10 +2,15 @@
 # -*- coding:utf8 -*-
 from flask import Flask
 from flask import request
-from utils.generateImg import *
+from biz.generateImg import *
+import datetime
+import time
+import sys
+import logging
+
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 
 app = Flask(__name__)
-
 driver = openWebDriver(True)
 
 
@@ -23,9 +28,12 @@ def hello():
     return name
 
 
-@app.route('/generateimage')
+@app.route('/generateimage', methods=['GET', 'POST'])
 def generateimage():
+    t1 = time.mktime(datetime.datetime.now().timetuple())
     generateImg(driver=driver)
+    t2 = time.mktime(datetime.datetime.now().timetuple())
+    logging.info('generateimage time use:%dms' % (t2 - t1))
     return 'ok'
 
 

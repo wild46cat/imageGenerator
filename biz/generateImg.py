@@ -5,23 +5,28 @@ from PIL import Image
 import time
 import uuid
 import os
+import sys
+import logging
 
-WORK_SPACE = os.getcwd()
-WEBDRIVER_PATH = "%s/docker/chromedriver" % WORK_SPACE
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+# WORK_SPACE = '/space/imageGenerator'
+WORK_SPACE = '/home/user/project/self/pythonproject/imageGenerator'
+WEBDRIVER_PATH = r"%s/docker/chromedriver" % WORK_SPACE
 HTML_TEMPLATE_PATH = 'file://%s/html/template.html' % WORK_SPACE
 IMAGE_PATH = '%s/img/' % WORK_SPACE
 
 
 # 开启webdriver
 def openWebDriver(headlessflag=True):
-    print(os.getcwd())
+    logging.info("work_space %s" % os.getcwd())
     chrome_options = webdriver.ChromeOptions()
     if headlessflag:
         # 使用headless无界面浏览器模式
         chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome(executable_path=WEBDRIVER_PATH, options=chrome_options, port=56789)
+    driver = webdriver.Chrome(executable_path=WEBDRIVER_PATH, options=chrome_options)
     return driver
 
 
@@ -34,13 +39,11 @@ def closeWebDriver(driver):
 def generateImg(driver):
     driver.get(HTML_TEMPLATE_PATH)
     title = driver.title
-    print title
     full_image_name = '%s%s-%s.png' % (IMAGE_PATH, time.strftime('%Y%m%d', time.localtime()), uuid.uuid4())
     driver.save_screenshot(full_image_name)
 
     element = driver.find_element_by_id("pic")
-    print(element.location)
-    print(element.size)
+    logging.info("element info:%s,%s" % (element.location, element.size))
     # 获取element的顶点坐标
     xPiont = element.location['x']
     yPiont = element.location['y']
