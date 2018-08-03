@@ -1,0 +1,40 @@
+FROM ubuntu:18.04
+#FROM self_ubuntu:18.04
+
+MAINTAINER xueyou
+
+COPY sources.list /etc/apt/sources.list
+COPY ./98tsinghuasource /etc/apt/apt.conf.d/98tsinghuasource
+
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get update && \
+      apt-get install -y python \
+                       python-dev \
+                       python-pip  \
+                        wget \
+                       libx11-dev \
+                       libnss3-dev \
+                         xvfb gtk2-engines-pixbuf \
+                        xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable \
+                        imagemagick x11-apps \
+    && apt-get autoclean \
+    && apt-get clean \
+    && apt-get autoremove \
+    && pip install pillow \
+    && pip install flask \
+    && pip install selenium \
+    && pip install qiniu \
+    && pip install gunicorn
+
+RUN Xvfb -ac :99 -screen 0 1280x1024x16 & export DISPLAY=:99
+#google安装
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+RUN sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+RUN apt-get update \
+    && apt-get -y install google-chrome-stable \
+    && apt-get autoclean \
+    && apt-get clean \
+    && apt-get autoremove \
+
+ENTRYPOINT ["/bin/bash"]
