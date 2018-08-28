@@ -5,10 +5,14 @@ from flask import request
 from biz.generateImg import *
 import datetime
 import time
-import sys
 import logging
+import logging.config
 
-logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+# 读取日志配置文件内容
+logging.config.fileConfig('%s/resources/logging.conf' % WORK_SPACE)
+
+# 创建一个日志器logger
+logger = logging.getLogger('app')
 
 app = Flask(__name__)
 driver = openWebDriver(True)
@@ -16,6 +20,7 @@ driver = openWebDriver(True)
 
 @app.route('/')
 def hello_world():
+    logger.info(123)
     return 'Hello World!'
 
 
@@ -33,7 +38,7 @@ def generateimage():
     t1 = time.mktime(datetime.datetime.now().timetuple())
     generateImg(driver=driver)
     t2 = time.mktime(datetime.datetime.now().timetuple())
-    logging.info('generateimage time use:%dms' % (t2 - t1))
+    logger.info('generateimage time use:%dms' % (t2 - t1))
     return 'ok'
 
 

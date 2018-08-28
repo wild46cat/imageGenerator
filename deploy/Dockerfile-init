@@ -1,0 +1,17 @@
+FROM joyzoursky/python-chromedriver:2.7-alpine3.7-selenium
+
+MAINTAINER xueyou
+
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apk --update add libxml2-dev libxslt-dev libffi-dev gcc musl-dev libgcc openssl-dev curl \
+    && apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev \
+    && pip install --upgrade pip \
+    && pip install pillow \
+    && pip install flask \
+    && pip install selenium \
+    && pip install qiniu \
+    && pip install gunicorn
+
+ENTRYPOINT ["/bin/sh"]

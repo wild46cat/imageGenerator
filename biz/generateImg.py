@@ -7,19 +7,24 @@ import uuid
 import os
 import sys
 import logging
-
-logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+import logging.config
 
 # WORK_SPACE = '/space/imageGenerator'
-WORK_SPACE = '/home/user/project/self/pythonproject/imageGenerator'
-WEBDRIVER_PATH = r"%s/docker/chromedriver" % WORK_SPACE
-HTML_TEMPLATE_PATH = 'file://%s/html/template.html' % WORK_SPACE
-IMAGE_PATH = '%s/img/' % WORK_SPACE
+WORK_SPACE = '/home/wildcat/project/pythonproject/imageGenerator'
+WEBDRIVER_PATH = r"%s/deploy/docker/chromedriver" % WORK_SPACE
+HTML_TEMPLATE_PATH = 'file://%s/resources/html/template.html' % WORK_SPACE
+IMAGE_PATH = '%s/resources/img/' % WORK_SPACE
+
+# 读取日志配置文件内容
+logging.config.fileConfig('%s/resources/logging.conf' % WORK_SPACE)
+
+# 创建一个日志器logger
+logger = logging.getLogger('generateImg')
 
 
 # 开启webdriver
 def openWebDriver(headlessflag=True):
-    logging.info("work_space %s" % os.getcwd())
+    logger.info("work_space %s" % os.getcwd())
     chrome_options = webdriver.ChromeOptions()
     if headlessflag:
         # 使用headless无界面浏览器模式
@@ -43,7 +48,7 @@ def generateImg(driver):
     driver.save_screenshot(full_image_name)
 
     element = driver.find_element_by_id("pic")
-    logging.info("element info:%s,%s" % (element.location, element.size))
+    logger.info("element info:%s,%s" % (element.location, element.size))
     # 获取element的顶点坐标
     xPiont = element.location['x']
     yPiont = element.location['y']
