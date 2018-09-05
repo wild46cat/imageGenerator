@@ -5,8 +5,6 @@ from PIL import Image
 import time
 import uuid
 import os
-import sys
-import logging
 import logging.config
 
 # WORK_SPACE = '/space/imageGenerator'

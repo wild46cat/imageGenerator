@@ -5,7 +5,6 @@ from flask import request
 from biz.generateImg import *
 import datetime
 import time
-import logging
 import logging.config
 
 # 读取日志配置文件内容
