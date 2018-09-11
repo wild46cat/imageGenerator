@@ -8,7 +8,7 @@ import os
 import logging.config
 
 # WORK_SPACE = '/space/imageGenerator'
-WORK_SPACE = '/home/wildcat/project/pythonproject/imageGenerator'
+WORK_SPACE = '/Users/wuxueyou/Project/python/imageGenerator'
 WEBDRIVER_PATH = r"%s/deploy/docker/chromedriver" % WORK_SPACE
 HTML_TEMPLATE_PATH = 'file://%s/resources/html/template.html' % WORK_SPACE
 IMAGE_PATH = '%s/resources/img/' % WORK_SPACE
@@ -30,6 +30,7 @@ def openWebDriver(headlessflag=True):
     chrome_options.add_argument('--disable-gpu')
     chrome_options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(executable_path=WEBDRIVER_PATH, options=chrome_options)
+    driver.set_window_size(1280, 1024)
     return driver
 
 
@@ -40,8 +41,13 @@ def closeWebDriver(driver):
 
 # 生成截图
 def generateImg(driver):
+    # 重新开一个窗口进行截图
+    exe_js_str = 'window.open("");'
+    driver.execute_script(exe_js_str)
+    allHandles = driver.window_handles
+    driver.switch_to.window(allHandles[1])
+
     driver.get(HTML_TEMPLATE_PATH)
-    title = driver.title
     full_image_name = '%s%s-%s.png' % (IMAGE_PATH, time.strftime('%Y%m%d', time.localtime()), uuid.uuid4())
     driver.save_screenshot(full_image_name)
 
@@ -58,4 +64,7 @@ def generateImg(driver):
     picture = picture.crop((xPiont, yPiont, element_width, element_height))
     res_img_name = '%s_res.png' % full_image_name[:-4]
     picture.save(res_img_name)
+    driver.close()
+    driver.switch_to.window(allHandles[0])
+
     return 'ok'

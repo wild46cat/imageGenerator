@@ -30,7 +30,7 @@ element_height = yPiont + element.size['height']
 picture = Image.open(full_image)
 res_image = '/home/user/project/self/pythonproject/imageGenerator/img/index3_res.png'
 picture = picture.crop((xPiont, yPiont, element_width, element_height))
-picture.save(res_image);
+picture.save(res_image)
 
 print data
 print os.getcwd()
