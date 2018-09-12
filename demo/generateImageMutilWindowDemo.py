@@ -44,3 +44,4 @@ if __name__ == '__main__':
     print os.getcwd()
     driver1.close()
     driver1.switch_to.window(allHandles[0])
+    driver1.close()
